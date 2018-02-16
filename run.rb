@@ -11,29 +11,15 @@ class ::Hash # https://stackoverflow.com/a/30225093
 	end
 end
 
-def load_settings(filename)
-	settings_file = File.open(filename)
-	settings = JSON.parse(settings_file.read)
-	settings_file.close()
-	return settings
-rescue
-	return {}
-end
-
-def save_settings(settings, filename)
-	settings_file = File.open(filename, "w")
-	settings_file.write(JSON.pretty_generate(settings).gsub("  ", "\t") + "\n")
-	settings_file.close()
-end
-
 def add_modules(folder="modules")
-	loaded = 0
+	loaded = []
 	
 	modules = Dir.entries(folder).select {|d| !File.directory?("#{folder}/#{d}") && d.end_with?(".rb")}
 	modules.each do |m|
-		puts "Loading #{folder}/#{m}"
-		loaded += 1
-		require_relative "#{folder}/#{m}"
+		m = "#{folder}/#{m}"
+		loaded_module = m.chomp(".rb").reverse.chomp("#{folder.split("/")[0]}/".reverse).reverse
+		loaded << loaded_module unless loaded_module.start_with? "hidden/"
+		require_relative "#{m}"
 	end
 	
 	subfolders = Dir.entries(folder).select {|d| File.directory?("#{folder}/#{d}")}
@@ -41,11 +27,22 @@ def add_modules(folder="modules")
 	subfolders.delete(".")
 	
 	subfolders.each do |d|
-		loaded += add_modules("#{folder}/#{d}")
+		loaded |= add_modules("#{folder}/#{d}")
 	end
 	return loaded
 end
 
+util_modules = add_modules "util"
+
+def load_settings(filename)
+	JSONHelper.read_safe(filename)
+end
+
+def save_settings(settings, filename)
+	File.open(filename, "w") do |f| f.write(JSONHelper.to_pretty(settings)) end
+end
+
+require_relative "bot_settings"
 require_relative "bot_credentials"
 
 $bot = Discordrb::Commands::CommandBot.new(
@@ -54,10 +51,7 @@ $bot = Discordrb::Commands::CommandBot.new(
 	token: $BOT_TOKEN, 
 	client_id: $BOT_CLIENT_ID)
 
-puts "This bot's invite URL is: \n\t#{$bot.invite_url}"
-puts "Click on it to invite it to your server."
-
-require_relative "bot_settings"
+puts "This bot's invite URL is: \n\t#{$bot.invite_url}\nClick on it to invite it to your server.";puts
 
 def init_user(id, health_max=100.0, attack=1.0, defence=0.0, speed=1.0, intelligence=100.0, luck=75.0)
 	id_str = "#{id}"
@@ -131,13 +125,13 @@ $bot.ready do |event|
 	$bot.game=$default_game
 end
 
-puts "Loaded #{add_modules} modules."
+functional_modules = add_modules
 
-puts "Start"
+puts "Loaded #{util_modules.size} util modules. #{util_modules.to_s}";puts
+puts "Loaded #{functional_modules.size} functional modules. #{functional_modules.to_s}";puts
 
 $bot.run
 
 save_settings($settings, SETTINGS_FILENAME)
-puts "End"
 
 
