@@ -18,7 +18,7 @@ def add_modules(folder="modules")
 	modules.each do |m|
 		m = "#{folder}/#{m}"
 		loaded_module = m.chomp(".rb").reverse.chomp("#{folder.split("/")[0]}/".reverse).reverse
-		loaded << loaded_module unless loaded_module.start_with? "hidden/"
+		loaded << loaded_module unless(loaded_module.start_with?("hidden/") || loaded_module.include?("/hidden/"))
 		require_relative "#{m}"
 	end
 	
