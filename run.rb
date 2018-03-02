@@ -1,7 +1,8 @@
+require "date"
 require "json"
-require "uri"
 require "open-uri"
 require "openssl"
+require "uri"
 require "discordrb"
 
 class ::Hash # https://stackoverflow.com/a/30225093
@@ -32,7 +33,7 @@ def add_modules(folder="modules")
 	return loaded
 end
 
-util_modules = add_modules "util"
+$UTIL_MODULES = add_modules "util"
 
 def load_settings(filename)
 	JSONHelper.read_safe(filename)
@@ -125,10 +126,12 @@ $bot.ready do |event|
 	$bot.game=$default_game
 end
 
-functional_modules = add_modules
+$FUNCTIONAL_MODULES = add_modules
 
-puts "Loaded #{util_modules.size} util modules. #{util_modules.to_s}";puts
-puts "Loaded #{functional_modules.size} functional modules. #{functional_modules.to_s}";puts
+puts "Loaded #{$UTIL_MODULES.size} util modules. #{$UTIL_MODULES.to_s}";puts
+puts "Loaded #{$FUNCTIONAL_MODULES.size} functional modules. #{$FUNCTIONAL_MODULES.to_s}";puts
+
+$START_TIME = Time.now
 
 $bot.run
 
