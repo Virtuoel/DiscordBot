@@ -29,8 +29,9 @@ end
 
 $bot.command(:about) do |event, *args|
 	"Uptime: #{get_trimmed_uptime()}.\n" + 
-	"Loaded #{$UTIL_MODULES.size} utility module#{$UTIL_MODULES.size == 1 ? "" : "s"} and #{$FUNCTIONAL_MODULES.size} functional module#{$FUNCTIONAL_MODULES.size == 1 ? "" : "s"}.\n" + 
-	"Running on #{RUBY_DESCRIPTION.capitalize}.\n" + 
-	"Created by Virtuoel:\n" + 
+	"Loaded #{$UTIL_MODULES.size} utility module#{$UTIL_MODULES.size == 1 ? "" : "s"} and #{$FUNCTIONAL_MODULES.size} functional module#{$FUNCTIONAL_MODULES.size == 1 ? "" : "s"}.\n" +
+	"Running on #{RUBY_DESCRIPTION.capitalize}.\n" +
+	"Using Discordrb #{Discordrb::VERSION}.\n" +
+	"Created by Virtuoel: " +
 	"https://github.com/Virtuoel/DiscordBot"
 end
