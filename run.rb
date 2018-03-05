@@ -135,6 +135,8 @@ $START_TIME = Time.now
 
 $bot.run
 
-save_settings($settings, SETTINGS_FILENAME)
+$stop_handlers.each do |h|
+	h[]
+end
 
 
