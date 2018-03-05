@@ -1,0 +1,217 @@
+{
+	"player":
+	{
+		"inventory":
+		[
+			null
+		],
+		"equipment":
+		{
+			"head": null,
+			"body": null,
+			"left_arm": null,
+			"right_arm": null,
+			"left_hand": null,
+			"right_hand": null,
+			"left_leg": null,
+			"right_leg": null,
+			"left_foot": null,
+			"right_foot": null
+		},
+		"pos": "beach",
+		"facing": "south",
+		"structure": null
+	},
+	"areas":
+	{
+		"reef":
+		{
+			"far_description":
+			[
+				"@TO_DIRECTION@ there is a sprawling coral reef.",
+				"@TO_DIRECTION@ there is a coral reef."
+			],
+			"description":
+			[
+				"You are in a pretty coral reef.",
+				"You are in quite a large coral reef.",
+				"You are in a delicate coral reef."
+			],
+			"enter":
+			{
+				"down":
+				{
+					"valid": true,
+					"message":
+					[
+						"You come close to the ocean floor."
+					]
+				}
+			},
+			"exit":
+			{
+				"up":
+				{
+					"valid": true,
+					"message":
+					[
+						"You swim upwards."
+					]
+				},
+				"down":
+				{
+					"valid": false,
+					"message":
+					[
+						"You cannot dive any further. There is only coral below."
+					]
+				}
+			},
+			"border":
+			{
+				"up": "ocean"
+			}
+		},
+		"ocean":
+		{
+			"far_description":
+			[
+				"@TO_DIRECTION@ there is an ocean.",
+				"@TO_DIRECTION@ there is a salty ocean."
+			],
+			"description":
+			[
+				"You are in an ocean.",
+				"You are in an ocean. The waves are calm."
+			],
+			"enter":
+			{
+				"north":
+				{
+					"valid": true,
+					"message":
+					[
+						"You are out at sea."
+					]
+				},
+				"down":
+				{
+					"valid": true,
+					"message":
+					[
+						"You emerge from the surface."
+					]
+				}
+			},
+			"exit":
+			{
+				"north":
+				{
+					"valid": true,
+					"message":
+					[
+						"You swim to shore."
+					]
+				},
+				"down":
+				{
+					"valid": true,
+					"message":
+					[
+						"You dive down."
+					]
+				}
+			},
+			"border":
+			{
+				"north": "beach",
+				"down": "reef"
+			}
+		},
+		"beach":
+		{
+			"far_description":
+			[
+				"@TO_DIRECTION@ there is a beach."
+			],
+			"description":
+			[
+				"You are on a beach.",
+				"You are on a sandy beach.",
+				"You are on a beach. The breeze is soothing"
+			],
+			"enter":
+			{
+				"north":
+				{
+					"valid": true,
+					"message":
+					[
+						"You step onto the sand."
+					]
+				}
+			},
+			"exit":
+			{
+				"south":
+				{
+					"valid": true,
+					"message":
+					[
+						"You head down the shore and into the water."
+					]
+				}
+			},
+			"border":
+			{
+				"south": "ocean"
+			},
+			"inspect":
+			{
+				"success":
+				[
+					{
+						"weight": 1,
+						"message":
+						[
+							"You find $ITEM buried in the sand!"
+						],
+						"events":
+						[
+							{
+								"type": "gain_item",
+								"value": "common"
+							},
+							{
+								"type": "stamina",
+								"value": -1
+							}
+						]
+					},
+					{
+						"weight": 10,
+						"message":
+						[
+							"You dig through the sand and find only more sand"
+						],
+						"events":
+						[
+							{
+								"type": "stamina",
+								"value": -1
+							}
+						]
+					}
+				],
+				"fail":
+				[
+					null
+				],
+				"full_inventory":
+				[
+					null
+				]
+			}
+		}
+	}
+}
