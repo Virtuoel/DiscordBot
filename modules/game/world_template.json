@@ -1,10 +1,21 @@
 {
+	"settings":
+	{
+		"immersive":
+		[
+			null
+		]
+	},
 	"player":
 	{
 		"inventory":
-		[
-			null
-		],
+		{
+			"capacity": 5,
+			"items":
+			[
+				null
+			]
+		},
 		"equipment":
 		{
 			"head": null,
