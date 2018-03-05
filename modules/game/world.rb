@@ -112,17 +112,24 @@ def parse_action(event, args, immersive=false)
 	when "delete", "destroy", "remove"
 		return nil if immersive
 		return "You do not have a world generated." if getPlayerWorld(player).nil?
-		$worlds[player.id.to_s] = nil
-		return "World deleted."
+		return "Too many arguments supplied: (#{arg_count})" if arg_count > 1
+		return "Too many arguments supplied: (#{arg_count})" if arg_count > 0 && args[0] != "confirm"
+		if arg_count > 0 && args[0] == "confirm" then
+			$worlds.delete(player.id.to_s)
+			return "World deleted."
+		else
+			return "Run **`#{$COMMAND_PREFIX}world #{action} confirm`** to #{action} your world."
+		end
 	when "regenerate", "regen", "recreate", "rebuild", "remake"
 		return nil if immersive
+		return "You do not have a world generated." if getPlayerWorld(player).nil?
 		return "Too many arguments supplied: (#{arg_count})" if arg_count > 1
-		return "Too many arguments supplied: (#{arg_count})" if arg_count > 0 && args[0].downcase != "confirm"
-		if arg_count > 0 && args[0].downcase == "confirm" then
+		return "Too many arguments supplied: (#{arg_count})" if arg_count > 0 && args[0] != "confirm"
+		if arg_count > 0 && args[0] == "confirm" then
 			$worlds[player.id.to_s] = generate_world(player)
 			return "World regenerated.\n\n" + parse_action(event, ["inspect"])
 		else
-			return "Run **`#{$COMMAND_PREFIX}world #{action} confirm`** to regenerate your world."
+			return "Run **`#{$COMMAND_PREFIX}world #{action} confirm`** to #{action} your world."
 		end
 	when "inspect", "check", "look"
 		return "No world generated." if getPlayerWorld(player).nil?
