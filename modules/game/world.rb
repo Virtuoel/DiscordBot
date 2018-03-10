@@ -123,8 +123,9 @@ def parse_action(event, args, immersive=false)
 		return "Too many arguments supplied: (#{arg_count})" if arg_count > 1
 		return "Too many arguments supplied: (#{arg_count})" if arg_count > 0 && args[0] != "confirm"
 		if arg_count > 0 && args[0] == "confirm" then
+			old_immersive = !getPlayerWorld(player)["settings"]["immersive"].compact.empty?
 			$worlds.delete(player.id.to_s)
-			return "World deleted."
+			return "World deleted.#{old_immersive ? "\nImmersive actions have been disabled in all channels." : ""}"
 		else
 			return "Run **`#{$COMMAND_PREFIX}world #{action} confirm`** to #{action} your world."
 		end
@@ -134,7 +135,9 @@ def parse_action(event, args, immersive=false)
 		return "Too many arguments supplied: (#{arg_count})" if arg_count > 1
 		return "Too many arguments supplied: (#{arg_count})" if arg_count > 0 && args[0] != "confirm"
 		if arg_count > 0 && args[0] == "confirm" then
+			old_immersive = !getPlayerWorld(player)["settings"]["immersive"].compact.empty?
 			$worlds[player.id.to_s] = generate_world(player)
+			$worlds[player.id.to_s]["settings"]["immersive"] = old_immersive
 			return "World regenerated.\n\n" + parse_action(event, ["inspect"])
 		else
 			return "Run **`#{$COMMAND_PREFIX}world #{action} confirm`** to #{action} your world."
