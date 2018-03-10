@@ -3,20 +3,28 @@ def load_template()
 	$template = JSONHelper.read_safe(__FILE__.split("/")[0..-2].join("/") + "/" + "world_template.json")
 end
 
+def save_template()
+	File.open(__FILE__.split("/")[0..-2].join("/") + "/" + "world_template.json", "w") do |f|
+		f.write(JSONHelper.to_pretty($template))
+	end
+end
+
 def load_worlds()
 	$worlds = JSONHelper.read_safe(__FILE__.split("/")[0..-2].join("/") + "/" + "worlds.json")
+end
+
+def save_worlds()
+	File.open(__FILE__.split("/")[0..-2].join("/") + "/" + "worlds.json", "w") do |f|
+		f.write(JSONHelper.to_pretty($worlds))
+	end
 end
 
 load_template
 load_worlds
 
 $stop_handlers.unshift ->() do
-	File.open(__FILE__.split("/")[0..-2].join("/") + "/" + "worlds.json", "w") do |f|
-		f.write(JSONHelper.to_pretty($worlds))
-	end
-# 	File.open(__FILE__.split("/")[0..-2].join("/") + "/" + "world_template.json", "w") do |f|
-# 		f.write(JSONHelper.to_pretty($template))
-# 	end
+#	save_template
+	save_worlds
 end
 
 def getPlayerAvatar(player)
