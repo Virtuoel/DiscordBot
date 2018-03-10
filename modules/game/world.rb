@@ -151,7 +151,7 @@ def parse_action(event, args, immersive=false)
 				getLocation(player, borders[direction])["far_description"].sample
 				.gsub("@FROM_DIRECTION@", getFromDirectionMessage(direction))
 				.gsub("@TO_DIRECTION@", getToDirectionMessage(direction))
-				.gsub("@DIRECTION@", direction).capitalize
+				.gsub("@DIRECTION@", direction).sub(/^./, &:upcase)
 			end
 		end
 		return msg
@@ -190,7 +190,7 @@ def parse_action(event, args, immersive=false)
 						.gsub("@DESTINATION@", destination_name)
 						.gsub("@FROM_DIRECTION@", getFromDirectionMessage(direction))
 						.gsub("@TO_DIRECTION@", getToDirectionMessage(direction))
-						.gsub("@DIRECTION@", direction).capitalize
+						.gsub("@DIRECTION@", direction).sub(/^./, &:upcase)
 					else
 						return "You are unable to reach the #{destination_name} #{getFromDirectionMessage(direction)}."
 					end
@@ -202,7 +202,7 @@ def parse_action(event, args, immersive=false)
 				.gsub("@DESTINATION@", destination_name)
 				.gsub("@FROM_DIRECTION@", getFromDirectionMessage(direction))
 				.gsub("@TO_DIRECTION@", getToDirectionMessage(direction))
-				.gsub("@DIRECTION@", direction).capitalize
+				.gsub("@DIRECTION@", direction).sub(/^./, &:upcase)
 			else
 				return "You are unable to leave the #{getPlayerLocationName(player) || "place"} #{getFromDirectionMessage(direction)}."
 			end

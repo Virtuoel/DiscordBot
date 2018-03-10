@@ -105,7 +105,7 @@
 						"You are out at sea."
 					]
 				},
-				"down":
+				"up":
 				{
 					"valid": true,
 					"message":
